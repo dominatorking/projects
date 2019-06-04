@@ -1,4 +1,4 @@
-#head developer:- Yash mathura
+#Head developer:- Yash mathur
 #aim:- a gui simple calculator using tkinter
 #XXXXXXXXX😎SOURCE-CODE😎XXXXXXXX
 👇👇
