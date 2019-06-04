@@ -1,3 +1,7 @@
+#head developer:- Yash mathura
+#aim:- a gui simple calculator using tkinter
+#XXXXXXXXX😎SOURCE-CODE😎XXXXXXXX
+👇👇
 import tkinter as tk
 class mapp(tk.Tk):
     def __init__(self):
