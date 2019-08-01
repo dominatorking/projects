@@ -1,0 +1,471 @@
+import tkinter as tk
+import os
+from tkinter import messagebox
+from tkinter import scrolledtext
+class mapp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.password()
+        
+    
+    def password(self):
+        self.a=tk.StringVar()
+        self.minsize(500,300)
+        self.maxsize(500,300)
+        self.configure(bg="light green")
+        self.text=tk.Label(self,text="Welcome to my GUI",fg="blue",bg="light green",font=("Segoe Script", "32","bold","underline")).place(x=50,y=21)
+
+        self.text1=tk.Label(self,text="Enter password",anchor='e',bg="light green",fg="blue").place(x=150,y=125)
+        self.v=tk.Entry(self,textvariable=self.a,show="*").place(x=250,y=125)
+     
+        self.bt=tk.Button(self,text="Enter",command=self.verify,bg="light yellow",fg="blue").place(x=250,y=180,height=25,width=50)
+        
+    def verify(self):
+        if self.a.get()=="yash":
+            
+            #self.root=tk.Toplevel(self)
+            #self.root.minsize(600,650)
+            #self.destroy()
+            list=self.place_slaves()
+            for i in list:
+                i.destroy()
+            
+            self.start()
+        else:
+            messagebox.showinfo("Failed","Sorry!! try again")
+    def start(self):
+        self.root=tk.Toplevel(self)
+        self.root.minsize(height=400,width=800)
+        self.root.maxsize(height=400,width=800)
+        self.root.withdraw()
+        self.minsize(height=600,width=800)
+        self.maxsize(height=600,width=800)
+        self.btn1=tk.Button(text="Add profile",command=self.add).place(x=50,y=50)
+        self.btn2=tk.Button(text="View profile",command=self.view).place(x=50,y=100)
+        self.btn2=tk.Button(text="update profile",command=self.update).place(x=50,y=150)
+    def update(self):
+        self.withdraw()
+        self.root.update()
+        self.root.deiconify()
+        self.root.configure(bg="light green")
+        self.id=tk.StringVar()
+        self.id.trace("w",self.func2)
+        self.txt=tk.Label(self.root,text="Enter id",fg="blue",bg="light green",font=("small fonts", "15","bold")).place(x=100,y=50)
+        self.txt1=tk.Entry(self.root,textvariable=self.id).place(x=500,y=50)
+        self.a=tk.Button(self.root,text="Go",state=tk.DISABLED,command=self.file,bg="light yellow",fg="blue")
+        self.txt1=tk.Label(self.root,text="Your Full name",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=100)
+            
+        self.txt2=tk.Label(self.root,text="your Father's name",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=120)
+        
+        self.txt3=tk.Label(self.root,text="your Full Address",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=140)
+            
+        self.txt4=tk.Label(self.root,text="your current phone number",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=160)
+    
+        self.txt5=tk.Label(self.root,text="Amount ",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=180)
+
+
+        self.ent1=tk.StringVar()
+        self.ent2=tk.StringVar()
+        self.ent3=tk.StringVar()
+        self.ent4=tk.StringVar()
+        self.ent5=tk.StringVar()
+        t=[self.ent1,self.ent2,self.ent3,self.ent4,self.ent5]
+        m=100
+        for i in range(0,5):
+                self.la=tk.Entry(self.root,textvariable=t[i])
+                
+
+                self.la.place(x=400,y=m)
+                m+=20
+    def file(self):
+        str1=str(self.id.get())+"\n"
+        
+        ctr=0
+        u=[]
+        f=1
+        
+        with open("data.txt","r") as file:
+                lis=file.readlines()
+        for i in lis:
+            if f<len(lis):
+                u.append(f)
+                f+=6
+            else:
+                break
+        v=1
+        try:
+            for i in lis:
+                if i==str1 and v in u :
+                    ctr+=1
+                    break
+                else:
+                    ctr+=1
+                    v+=1
+        
+               
+            
+            
+            self.ent1=tk.StringVar()
+            self.ent2=tk.StringVar()
+            self.ent3=tk.StringVar()
+            self.ent4=tk.StringVar()
+            self.ent5=tk.StringVar()
+            t=[self.ent1,self.ent2,self.ent3,self.ent4,self.ent5]
+            m=100
+            for i in range(0,5):
+                self.la=tk.Entry(self.root,textvariable=t[i])
+                self.la.insert(tk.END,lis[ctr])
+                self.la.place(x=400,y=m)
+                m+=20
+                
+                
+                ctr+=1
+            self.bt=tk.Button(self.root,text="Done!!",bg="light yellow",fg="blue",width=3,height=1,command=self.func3).place(x=350,y=250)
+        except:
+            messagebox.showinfo("failed","sry bro try again")#latest error
+            for i in range(0,5):
+                self.la=tk.Entry(self.root,textvariable=t[i])
+                self.la.insert(tk.END," ")
+                self.la.place(x=400,y=m)
+                m+=20
+                
+                
+                
+            
+            
+    def func3(self):
+        str1=str(self.id.get())+"\n"
+        if self.ent1.get()!='' and self.ent2.get()!='' and self.ent3.get()!='' and self.ent4.get()!='' and self.ent5.get()!='':
+            with open("data.txt","r") as file:
+                lis=file.readlines()
+            new=list()
+            k=0
+            ctr=0
+            t=[self.ent1.get(),self.ent2.get(),self.ent3.get(),self.ent4.get(),self.ent5.get()]
+            p=0
+            for i in lis:                       #errorneous
+                if i!=str1 and k==0:
+                    new.append(i)
+                    
+                    
+                elif i==str1 and k==0:
+                    
+                    new.append(i)
+                    k=1
+                elif k==1 and p<5:
+                    h=str(t[p])
+                    
+                    new.append(h)
+                    p+=1
+                else:
+                    new.append(i)
+            messagebox.showinfo("Success","DONE!!")
+            
+        else:
+            messagebox.showinfo("Failed","Sorry!! try again")
+
+        
+        for i in range(0,len(new)):
+            if new[i].endswith("\n")==True:
+                pass
+            else:
+                
+                new[i]=new[i]+"\n"
+                
+        
+        with open("data2.txt","a+") as f:
+            for i in new:
+                f.write(i)
+        os.remove("data.txt")
+        os.rename("data2.txt","data.txt")
+            
+    
+    def func2(self,*args):
+                
+                if self.id.get()!="":
+                        self.a.place_forget()
+                        self.a.config(state=tk.NORMAL)
+                        self.a.place(x=400,y=250,width=45,height=25)
+            
+                else:
+                        self.a.place_forget()
+                        self.a.config(state=tk.DISABLED)
+                        self.a.place(x=400,y=250,width=45,height=25)
+    def add(self):
+        self.withdraw()
+        self.root.update()
+        self.root.deiconify()
+        self.root.configure(bg="light green")
+        self.id=tk.IntVar()
+        
+        count = 0
+        for line in open("data.txt"): count += 1
+        #print(count)
+        self.id=count//6
+        
+        self.uname=tk.StringVar()
+        self.ufname=tk.StringVar()
+        self.uadd=tk.StringVar()
+        self.uph=tk.StringVar()
+        self.uamt=tk.StringVar()
+        self.bt=tk.Button(self.root,text="back",command=self.rootback,bg="light yellow",fg="blue").place(x=650,y=50)
+        self.txt=tk.Label(self.root,text="You got ID- %d" %(self.id),fg="blue",bg="light green",font=("small fonts", "15","bold")).place(x=100,y=50)
+            
+        self.txt=tk.Label(self.root,text="Enter your Full name",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=100)
+            
+        self.txt=tk.Label(self.root,text="Enter your Father's name",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=120)
+            
+        self.txt=tk.Label(self.root,text="Enter your Full Address",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=140)
+            
+        self.txt=tk.Label(self.root,text="Enter your current phone number",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=160)
+            
+        self.txt=tk.Label(self.root,text="Enter Amount ",fg="blue",bg="light green",font=("courier", "11")).place(x=200,y=180)
+            
+        
+            
+            #dynamicbutton
+
+            
+            
+        self.uname.trace("w",self.func) and self.ufname.trace("w",self.func) and self.uadd.trace("w",self.func) and self.uph.trace("w",self.func) and self.uamt.trace("w",self.func)
+        
+        self.a=tk.Button(self.root,text="Go",state=tk.DISABLED,command=self.success,bg="light yellow",fg="blue")
+        self.txt=tk.Entry(self.root,textvariable=self.uname).place(x=500,y=100)
+            
+        self.txt=tk.Entry(self.root,textvariable=self.ufname).place(x=500,y=120)
+        self.txt=tk.Entry(self.root,textvariable=self.uadd).place(x=500,y=140)
+        self.txt=tk.Entry(self.root,textvariable=self.uph).place(x=500,y=160)
+        self.txt=tk.Entry(self.root,textvariable=self.uamt).place(x=500,y=180)
+        self.a.place(x=400,y=250,width=45,height=25)
+    def success(self):
+        id=str(self.id)
+        id+="\n"
+        name=str(self.uname.get())
+        name=name.lstrip(" ")
+        name=name.lstrip("\n")
+        name=name.rstrip(" ")
+        name=name.rstrip("\n")
+        name+="\n"
+        
+        fname=str(self.ufname.get())
+        fname=fname.lstrip(" ")
+        fname=fname.lstrip("\n")
+        fname=fname.rstrip(" ")
+        fname=fname.rstrip("\n")
+        fname+="\n"
+        uadd=str(self.uadd.get())
+        uadd=uadd.lstrip(" ")
+        uadd=uadd.lstrip("\n")
+        uadd=uadd.rstrip(" ")
+        uadd=uadd.rstrip("\n")
+        uadd+="\n"
+        uph=str(self.uph.get())
+        uph=uph.lstrip(" ")
+        uph=uph.lstrip("\n")
+        uph=uph.rstrip(" ")
+        uph=uph.rstrip("\n")
+        uph+="\n"
+        uamt=str(self.uamt.get())
+        uamt=uamt.lstrip(" ")
+        uamt=uamt.lstrip("\n")
+        uamt=uamt.rstrip(" ")
+        uamt=uamt.rstrip("\n")
+        uamt+="\n"
+        with open('data.txt','a+') as file:
+            file.write(id)
+            file.write(name)
+            file.write(fname)
+            file.write(uadd)
+            file.write(uph)
+            file.write(uamt)
+        
+        file.close()
+       
+        messagebox.showinfo("Congratulations","you have registered successfully")
+        
+        
+    def func(self,*args):
+                ctr=0
+                if(self.uname.get()!="" and self.ufname.get()!="" and self.uadd.get()!="" and self.uph.get()!="" and self.uamt.get()!=""):
+                    ctr+=1
+                if ctr==1:
+                        self.a.place_forget()
+                        self.a.config(state=tk.NORMAL)
+                        self.a.place(x=400,y=250,width=45,height=25)
+            
+                else:
+                        self.a.place_forget()
+                        self.a.config(state=tk.DISABLED)
+                        self.a.place(x=400,y=250,width=45,height=25)
+    def rootback(self):
+        self.root.withdraw()
+        self.update()
+        self.deiconify()
+            
+    def view(self):
+        self.withdraw()
+        self.root=tk.Toplevel(self)
+        self.root.minsize(height=400,width=800)
+        self.root.maxsize(height=400,width=800)
+        self.root.configure(bg="light green")
+        self.bt=tk.Button(self.root,text="click here",command=self.allprof,bg="light yellow",fg="blue").place(x=700,y=200)
+        self.bt=tk.Button(self.root,text="click here",command=self.enterid,bg="light yellow",fg="blue").place(x=700,y=100)
+        self.bt=tk.Button(self.root,text="click here",command=self.forgotten_id,bg="light yellow",fg="blue").place(x=700,y=150)
+        self.la=tk.Label(self.root,text="For getting the info of all profiles",fg="blue",bg="light green",font=("courier", "12","bold","underline")).place(x=50,y=200)
+        self.la=tk.Label(self.root,text="For getting the info of all profiles having a specific name",fg="blue",bg="light green",font=("courier", "12","bold","underline")).place(x=50,y=150)
+        self.la=tk.Label(self.root,text="For getting the info a single profile ",fg="blue",bg="light green",font=("courier", "12","bold","underline")).place(x=50,y=100)
+    def enterid(self):
+        
+        self.root1=tk.Toplevel(self.root)
+        self.root1.minsize(height=400,width=800)
+        self.root1.maxsize(height=400,width=800)
+        self.root.withdraw()
+        self.root1.configure(bg="light green")
+        self.id=tk.IntVar()
+        self.txt=tk.Label(self.root1,text="Enter your id",fg="blue",bg="light green",font=("Franklin Gothic Medium", "15")).place(x=280,y=100)
+        self.txt=tk.Entry(self.root1,textvariable=self.id).place(x=450,y=105)
+        self.bt=tk.Button(self.root1,text="show",command=self.idfunc,bg="light yellow",fg="blue").place(x=400,y=150)
+    def idfunc(self):
+        a=str(self.id.get())
+        a+="\n"
+        self.a1=tk.Button(self.root1,text="back",command=self.backforgotten,bg="light yellow",fg="blue").place(x=50,y=50)
+        u=[]
+        f=1
+        with open("data.txt","r") as file:
+                lis=file.readlines()
+        for i in lis:
+                if f<len(lis):
+                    u.append(f)
+                    f+=6
+                else:
+                    break
+        ctr=0
+        
+        g=1
+        b=list()
+        for i in lis:
+            if i==a and g in u:
+                break
+            else:
+                ctr+=1
+            g+=1
+        k=ctr
+        t=["Id:","Name:","Father's name:","Address:","Mobile phone:","Amount:"]
+        try:
+            for i in range(0,6):
+                b.append(t[i]+lis[k])
+                k+=1
+        except:
+            messagebox.showinfo("Failed","Sorry!! try again")
+        txtbox = scrolledtext.ScrolledText(self.root1, width=50, height=10)
+        for i in b:
+            txtbox.insert(tk.END,i)
+        txtbox.place(x=200,y=200)
+    def allprof(self):
+        self.root1=tk.Toplevel(self.root)
+        self.root1.minsize(height=400,width=800)
+        self.root1.maxsize(height=400,width=800)
+        self.root.withdraw()
+        self.root1.configure(bg="light green")
+        self.a1=tk.Button(self.root1,text="back",command=self.backforgotten,bg="light yellow",fg="blue").place(x=50,y=50)
+    
+        with open("data.txt","r") as file:
+                lis=file.readlines()
+        p=len(lis)//6
+        
+        t=["Id:","Name:","Father's name:","Address:","Mobile phone:","Amount:"]
+        newlis=list()
+        ctr=0
+        for i in range(0,p):
+            for j in range(0,6):
+                newlis.append(t[j]+lis[ctr])
+                ctr+=1
+        txtbox = scrolledtext.ScrolledText(self.root1, width=50, height=16)
+        for i in newlis:
+            txtbox.insert(tk.END,i)
+        txtbox.place(x=200,y=100)
+    def forgotten_id(self):
+        self.varn=tk.StringVar()
+        self.varn.trace("w",self.func1)
+        
+        self.root1=tk.Toplevel(self.root)
+        self.root1.minsize(height=400,width=800)
+        self.root1.maxsize(height=400,width=800)
+        self.root.withdraw()
+        self.root1.configure(bg="light green")
+        self.a1=tk.Button(self.root1,text="Go",command=self.results,state=tk.DISABLED,bg="light yellow",fg="blue")
+        self.a12=tk.Button(self.root1,text="back",command=self.backforgotten,bg="light yellow",fg="blue").place(x=650,y=50)
+        self.b1=tk.Entry(self.root1,textvariable=self.varn).place(x=190,y=123)
+        self.b1=tk.Label(self.root1,text="Enter name",fg="blue",bg="light green",font=("Franklin Gothic Medium", "15")).place(x=50,y=120)
+        self.a1.place(x=100,y=180)
+    def backforgotten(self):
+        self.root1.withdraw()
+        self.root.deiconify()                                                                          
+    def func1(self,*args):
+        ctr=0
+        if(self.varn.get()!=""):
+            ctr+=1
+        if ctr==1:
+		
+            self.a1.place_forget()
+            self.a1.config(state=tk.NORMAL)
+            self.a1.place(x=100,y=180)
+        else:
+            self.a1.place_forget()
+            self.a1.config(state=tk.DISABLED)
+            self.a1.place(x=100,y=180)
+    def results(self):
+            str1=str(self.varn.get())
+            str1+="\n"
+            u=[]
+            ctr2=0
+            g=2
+            with open("data.txt","r") as file:
+                a=file.readlines()
+            for i in a:
+                if g<len(a):
+                    u.append(g)
+                    g+=6
+                else:
+                    pass
+                    
+                
+            list1=list()
+            ctr3=0
+            o=1
+            for i in a:
+                    
+                if str1==i and (o in u) :
+                    list1.append(ctr3)
+                    ctr2+=1
+                else:
+                    pass
+                o+=1
+                ctr3+=1
+            lis=list()
+            for i in range(0,len(list1)):
+                list1[i]=list1[i]-1
+            
+            for i in list1:
+                k=i
+                for j in range(0,6):
+                    lis.append(a[k])
+                    k+=1
+            self.la=tk.Label(self.root1,text="We have overall %d results" %(ctr2),fg="blue",bg="light green",font=("Franklin Gothic Medium", "15")).place(x=300,y=50)       
+            
+            t=["Id:","Name:","Father's name:","Address:","Mobile phone:","Amount:"]
+            newlis=list()
+            ctr=0
+            for i in range(0,ctr2):
+                for j in range(0,6):
+                    newlis.append(t[j]+lis[ctr])
+                    ctr+=1
+            txtbox = scrolledtext.ScrolledText(self.root1, width=30, height=16)
+            for i in newlis:
+                txtbox.insert(tk.END,i)
+            txtbox.place(x=400,y=130)
+            
+                    
+if __name__ == "__main__": 
+    app=mapp()
+    app.mainloop()
